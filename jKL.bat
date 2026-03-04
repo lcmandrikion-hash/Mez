@@ -19,3 +19,4 @@ curl -s ^
 -d "{\"content\":\"%MESSAGE%\"}" ^
 https://discord.com/api/webhooks/1476889854296981637/-KRgTWFBVNLoiII8EPfnGZDivUtmerZR7Zr-NAhDJ3BkERuuXPW818ug_I-o5xak71OK
 
+exit
